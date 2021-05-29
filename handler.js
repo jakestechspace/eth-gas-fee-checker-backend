@@ -20,6 +20,11 @@ module.exports.checkGasFees = async (event) => {
   // Divide by 10 to convert to gwei
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Headers" : "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET"
+    },
     body: JSON.stringify({
       ...response.data,
       fast: fast / 10,
