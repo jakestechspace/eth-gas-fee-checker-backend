@@ -12,9 +12,15 @@ module.exports.checkGasFees = async (event) => {
   // Destructure values from response
   const {
     fast,
+    fastWait,
     fastest,
-    safeLow, 
+    fastestWait,
+    safeLow,
+    safeLowWait,
     average,
+    avgWait,
+    gasPriceRange, // spread this out since we aren't using it
+    ...rest
   } = response.data;
 
   // Divide by 10 to convert to gwei
@@ -26,11 +32,13 @@ module.exports.checkGasFees = async (event) => {
       "Access-Control-Allow-Methods": "GET"
     },
     body: JSON.stringify({
-      ...response.data,
-      fast: fast / 10,
-      fastest: fastest / 10,
-      safeLow: safeLow / 10, 
-      average: average / 10
+      ...rest,
+      feeData: [
+        { speed: "fastest", fee: fastest / 10, wait: fastestWait },
+        { speed: "fast", fee: fast / 10, wait: fastWait },
+        { speed: "average", fee: average / 10, wait: avgWait },
+        { speed: "safeLow", fee: safeLow / 10, wait: safeLowWait },
+      ]
     })
   };
 };
