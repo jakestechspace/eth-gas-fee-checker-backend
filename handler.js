@@ -26,13 +26,14 @@ module.exports.checkGasFees = async (event) => {
   // Divide by 10 to convert to gwei
   return {
     statusCode: 200,
-    headers: {
+    headers: { // Add CORS headers
       "Access-Control-Allow-Headers" : "Content-Type",
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET"
     },
     body: JSON.stringify({
       ...rest,
+      // Create better format for UI
       feeData: [
         { speed: "fastest", fee: fastest / 10, wait: fastestWait },
         { speed: "fast", fee: fast / 10, wait: fastWait },
